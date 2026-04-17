@@ -17,10 +17,11 @@ RUN pnpm install --no-frozen-lockfile --ignore-scripts
 # Permissions
 RUN chmod -R 777 /app
 
-# --- THE FIX STARTS HERE ---
-# Tell the environment that PORT is 7860
+# --- THE UPDATED FIX ---
+# Set both required variables
 ENV PORT=7860
-# --- THE FIX ENDS HERE ---
+ENV BASE_PATH=/
+# -----------------------
 
 EXPOSE 7860
 

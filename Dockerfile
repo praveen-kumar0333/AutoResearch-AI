@@ -1,27 +1,25 @@
-# Use a full Node image
 FROM node:20
 
-# Set working directory
 WORKDIR /app
 
 # Enable pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy everything first to ensure workspace files are found
+# Copy everything
 COPY . .
 
-# IMPORTANT: If your code is inside a subfolder named 'Attached-Assets', 
-# we need to move it to the root so pnpm can find the package.json.
+# Move files out of subfolder if they are trapped
 RUN if [ -d "Attached-Assets" ]; then cp -r Attached-Assets/* . && rm -rf Attached-Assets; fi
 
-# Clean install to avoid lockfile conflicts
+# Install all dependencies
 RUN pnpm install --no-frozen-lockfile --ignore-scripts
 
-# Permissions fix
+# Permissions
 RUN chmod -R 777 /app
 
-# Hugging Face default port
+# Expose port
 EXPOSE 7860
 
-# Start command
-CMD ["pnpm", "dev", "--host", "0.0.0.0", "--port", "7860"]
+# THE FIX: Tell pnpm exactly which project to run
+# We use --filter to target your main UI project
+CMD ["pnpm", "--filter", "autoresearch", "dev", "--host", "0.0.0.0", "--port", "7860"]

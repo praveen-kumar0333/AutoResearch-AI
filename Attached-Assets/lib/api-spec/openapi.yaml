@@ -1,0 +1,445 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: AutoResearch AI API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: research
+    description: Research workflow operations
+  - name: reports
+    description: Report management
+  - name: history
+    description: Research history
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /research:
+    post:
+      operationId: startResearch
+      tags: [research]
+      summary: Start a new research workflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartResearchBody"
+      responses:
+        "201":
+          description: Research started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResearchSession"
+        "400":
+          description: Invalid request
+
+  /research/{id}/status:
+    get:
+      operationId: getResearchStatus
+      tags: [research]
+      summary: Get research workflow status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Research status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResearchSession"
+        "404":
+          description: Not found
+
+  /reports:
+    get:
+      operationId: listReports
+      tags: [reports]
+      summary: List all research reports
+      parameters:
+        - name: mode
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Report"
+
+  /reports/{id}:
+    get:
+      operationId: getReport
+      tags: [reports]
+      summary: Get a specific research report
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Report details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteReport
+      tags: [reports]
+      summary: Delete a research report
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /history:
+    get:
+      operationId: getHistory
+      tags: [history]
+      summary: Get research history
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: History entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HistoryEntry"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [history]
+      summary: Get usage statistics
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stats"
+
+  /topics/suggestions:
+    get:
+      operationId: getTopicSuggestions
+      tags: [research]
+      summary: Get example topic suggestions
+      responses:
+        "200":
+          description: Topic suggestions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TopicSuggestion"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    StartResearchBody:
+      type: object
+      properties:
+        topic:
+          type: string
+        mode:
+          type: string
+          enum: [general, student, startup, investor, researcher, marketing]
+      required:
+        - topic
+        - mode
+
+    ResearchSession:
+      type: object
+      properties:
+        id:
+          type: integer
+        topic:
+          type: string
+        mode:
+          type: string
+        status:
+          type: string
+          enum: [pending, running, completed, failed]
+        currentAgent:
+          type: ["string", "null"]
+        currentStep:
+          type: ["integer", "null"]
+        totalSteps:
+          type: integer
+        reportId:
+          type: ["integer", "null"]
+        errorMessage:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - topic
+        - mode
+        - status
+        - currentAgent
+        - currentStep
+        - totalSteps
+        - reportId
+        - errorMessage
+        - createdAt
+        - updatedAt
+
+    Report:
+      type: object
+      properties:
+        id:
+          type: integer
+        sessionId:
+          type: integer
+        topic:
+          type: string
+        mode:
+          type: string
+        summary:
+          type: string
+        trends:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrendItem"
+        risks:
+          type: array
+          items:
+            $ref: "#/components/schemas/RiskItem"
+        opportunities:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpportunityItem"
+        recommendations:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecommendationItem"
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/Source"
+        confidenceScore:
+          type: number
+        timeSavedMinutes:
+          type: integer
+        keyInsights:
+          type: array
+          items:
+            type: string
+        executiveBrief:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - sessionId
+        - topic
+        - mode
+        - summary
+        - trends
+        - risks
+        - opportunities
+        - recommendations
+        - sources
+        - confidenceScore
+        - timeSavedMinutes
+        - keyInsights
+        - executiveBrief
+        - createdAt
+
+    TrendItem:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        score:
+          type: number
+        category:
+          type: string
+      required:
+        - title
+        - description
+        - score
+        - category
+
+    RiskItem:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+      required:
+        - title
+        - description
+        - severity
+
+    OpportunityItem:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        potential:
+          type: string
+          enum: [low, medium, high]
+      required:
+        - title
+        - description
+        - potential
+
+    RecommendationItem:
+      type: object
+      properties:
+        action:
+          type: string
+        rationale:
+          type: string
+        priority:
+          type: string
+          enum: [low, medium, high]
+      required:
+        - action
+        - rationale
+        - priority
+
+    Source:
+      type: object
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+        reliability:
+          type: number
+        summary:
+          type: string
+      required:
+        - title
+        - url
+        - reliability
+        - summary
+
+    HistoryEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        topic:
+          type: string
+        mode:
+          type: string
+        status:
+          type: string
+        reportId:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+      required:
+        - id
+        - topic
+        - mode
+        - status
+        - reportId
+        - createdAt
+
+    Stats:
+      type: object
+      properties:
+        totalResearches:
+          type: integer
+        completedResearches:
+          type: integer
+        totalTimeSaved:
+          type: integer
+        avgConfidenceScore:
+          type: number
+        researchesByMode:
+          type: object
+          additionalProperties:
+            type: integer
+      required:
+        - totalResearches
+        - completedResearches
+        - totalTimeSaved
+        - avgConfidenceScore
+        - researchesByMode
+
+    TopicSuggestion:
+      type: object
+      properties:
+        topic:
+          type: string
+        mode:
+          type: string
+        category:
+          type: string
+      required:
+        - topic
+        - mode
+        - category

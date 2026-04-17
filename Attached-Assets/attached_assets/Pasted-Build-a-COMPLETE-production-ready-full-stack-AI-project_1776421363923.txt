@@ -1,0 +1,460 @@
+Build a COMPLETE production-ready full-stack AI project named:
+
+AUTORESEARCH AI
+A Multi-Agent Autonomous Research & Intelligence Workflow Platform
+
+Goal:
+Create a winning “Agentathon 2026” level project that fully satisfies this challenge:
+
+- Agentic Workflow
+- Multi-Agent System
+- Autonomous execution (not chatbot only)
+- Reasoning
+- Tool use
+- Multi-step decision making
+- Real-world usefulness
+- Beautiful UI
+- Strong demo value
+- Modern architecture
+
+====================================================
+CORE PROBLEM WE SOLVE
+====================================================
+
+Today students, founders, researchers, marketers, developers and professionals waste hours doing:
+
+- searching many websites
+- reading multiple articles
+- comparing information
+- creating notes
+- generating reports
+- finding trends
+- making decisions
+
+This project should reduce a 1-hour manual task into 1 minute.
+
+====================================================
+PROJECT NAME
+====================================================
+
+AutoResearch AI
+
+Tagline:
+“Your Autonomous Multi-Agent Research Team”
+
+====================================================
+MAIN USER FLOW
+====================================================
+
+User enters topic such as:
+
+- AI Trends 2026
+- EV Battery Innovation
+- Startup Funding India
+- Cybersecurity Threats
+- Placement Skills for Students
+- Cloud Computing Jobs
+- Competitor Analysis for OpenAI
+
+Then system automatically:
+
+1. Understands request
+2. Plans workflow
+3. Searches web
+4. Collects data
+5. Summarizes findings
+6. Extracts trends
+7. Generates insights
+8. Suggests actions
+9. Creates downloadable report
+10. Saves history
+
+====================================================
+MANDATORY AGENTIC ARCHITECTURE
+====================================================
+
+Create MULTI AGENT system with these agents:
+
+1. MANAGER AGENT
+- Understand user goal
+- Break into tasks
+- Delegate to sub agents
+- Retry failed steps
+- Merge outputs
+
+2. RESEARCH AGENT
+- Search latest web data
+- Gather trustworthy sources
+- Extract key facts
+
+3. SUMMARIZER AGENT
+- Convert long data into concise bullets
+
+4. INSIGHT AGENT
+- Detect trends
+- Opportunities
+- Risks
+- Recommendations
+
+5. REPORT AGENT
+- Create final polished report
+
+6. FACT CHECK AGENT
+- Validate contradictory info
+- Confidence score
+
+====================================================
+MANDATORY PILLARS FROM PROBLEM STATEMENT
+====================================================
+
+PERCEPTION:
+System can “see” external world through:
+- Web search APIs
+- News feeds
+- Live trends
+- URL scraping
+
+REASONING:
+- Manager plans task sequence
+- Chooses best agents
+- Self-corrects if poor results
+
+ACTION:
+- Generate report
+- Export PDF
+- Email report (mock)
+- Save to dashboard
+- Create summary cards
+
+====================================================
+TECH STACK
+====================================================
+
+Frontend:
+- React + Vite
+- Tailwind CSS
+- Framer Motion
+- Lucide Icons
+- Recharts
+- Beautiful responsive dashboard
+
+Backend:
+- Node.js + Express OR Python FastAPI (choose best and stable)
+- Clean API routes
+
+AI:
+- OpenAI compatible API OR Groq OR Gemini (easy env setup)
+- LangChain or CrewAI style orchestration
+(If full CrewAI difficult on Replit, simulate multi-agent orchestration in backend logic)
+
+Database:
+- SQLite or Supabase or local JSON storage
+
+====================================================
+UI REQUIREMENTS (VERY IMPORTANT)
+====================================================
+
+Need premium startup-quality UI.
+
+Pages:
+
+1. Landing Page
+- Hero section with animated background
+- AI themed gradient
+- Stunning illustration
+- CTA button “Start Research”
+- Sections:
+  - How it works
+  - Features
+  - Use cases
+  - Testimonials (mock)
+  - Footer
+
+2. Dashboard
+- Sidebar navigation
+- Search input for topic
+- Example prompts
+- Recent reports
+- Stats cards
+
+3. Research Workflow Screen
+Show live steps:
+
+✔ Manager Planning
+✔ Research Agent Searching
+✔ Summarizer Working
+✔ Insight Agent Thinking
+✔ Report Generated
+
+Animated progress timeline.
+
+4. Results Screen
+Tabs:
+
+- Executive Summary
+- Sources
+- Key Trends
+- Risks
+- Opportunities
+- Recommendations
+- Raw Data
+
+5. Export Section
+Buttons:
+- Download PDF
+- Copy Report
+- Save
+
+6. History Page
+Previous searches
+
+7. Settings Page
+Theme toggle
+API key settings
+
+====================================================
+VISUAL STYLE
+====================================================
+
+- Glassmorphism cards
+- Smooth animations
+- Rounded corners
+- Gradients
+- Modern shadows
+- Mobile responsive
+- Dark mode default
+- Light mode toggle
+
+Use beautiful royalty-free images / AI themed illustrations.
+
+====================================================
+FUNCTIONAL FEATURES
+====================================================
+
+1. Topic Input
+User enters custom topic.
+
+2. Smart Suggestions
+Autocomplete sample topics.
+
+3. Multi-Agent Execution
+Real backend workflow.
+
+4. Tool Use
+Use search API or scrape latest public sources.
+
+5. Self Correction
+If no results:
+- retry alternate query
+- broaden search terms
+- notify user
+
+6. Source Citations
+Display source links.
+
+7. Confidence Meter
+Show confidence score.
+
+8. Time Saved Meter
+Estimate manual time saved.
+
+9. Export PDF
+
+10. Share Link (mock)
+
+11. Save reports locally
+
+====================================================
+ADVANCED BONUS FEATURES
+====================================================
+
+Add if possible:
+
+- Voice input
+- Voice summary playback
+- Competitor comparison mode
+- SWOT analysis mode
+- Student Career Research mode
+- Market Research mode
+- News Monitoring mode
+- Scheduled daily reports
+
+====================================================
+USEFUL REAL WORLD MODES
+====================================================
+
+Create templates:
+
+1. Student Mode
+Research career skills/jobs
+
+2. Startup Mode
+Competitor analysis
+
+3. Investor Mode
+Industry trends
+
+4. Researcher Mode
+Technical briefings
+
+5. Marketing Mode
+Audience trend analysis
+
+====================================================
+BACKEND API ROUTES
+====================================================
+
+POST /api/research
+Input:
+topic, mode
+
+GET /api/history
+
+GET /api/report/:id
+
+POST /api/export/pdf
+
+====================================================
+AI WORKFLOW LOGIC
+====================================================
+
+When user submits topic:
+
+1. Manager Agent:
+Determine plan
+
+2. Research Agent:
+Search 5+ sources
+
+3. Summarizer:
+Create bullet notes
+
+4. Insight Agent:
+Generate:
+- trends
+- opportunities
+- risks
+
+5. Fact Checker:
+Assign confidence score
+
+6. Report Agent:
+Build polished final report JSON
+
+====================================================
+RESULT JSON STRUCTURE
+====================================================
+
+{
+  topic,
+  summary,
+  trends[],
+  risks[],
+  opportunities[],
+  recommendations[],
+  sources[],
+  confidence,
+  timeSaved,
+  createdAt
+}
+
+====================================================
+CODE QUALITY
+====================================================
+
+- Modular folders
+- Clean comments
+- Production structure
+- Environment variables
+- Error handling
+- Loading states
+- Retry states
+- Empty states
+
+====================================================
+REPLIT REQUIREMENTS
+====================================================
+
+Must run smoothly in Replit.
+
+Provide:
+
+- package.json / requirements
+- start command
+- .env.example
+- clear setup instructions
+
+====================================================
+WINNING DEMO EXPERIENCE
+====================================================
+
+When opening app:
+
+Landing page impresses judges.
+
+When entering topic:
+“AI Trends 2026”
+
+Live workflow animation runs.
+
+Then polished report appears with charts and cards.
+
+====================================================
+CHARTS TO INCLUDE
+====================================================
+
+Use Recharts:
+
+- Trend score chart
+- Source reliability pie chart
+- Opportunities bar chart
+
+====================================================
+EXAMPLE REPORT CONTENT
+====================================================
+
+Topic: AI Trends 2026
+
+Summary:
+Top enterprise AI trends...
+
+Trends:
+- AI agents
+- multimodal search
+- edge AI
+
+Risks:
+- regulation
+- privacy
+
+Opportunities:
+- student jobs
+- startups
+
+====================================================
+DELIVERABLES
+====================================================
+
+Generate FULL CODEBASE with:
+
+Frontend + Backend + Styling + APIs + Components + README
+
+====================================================
+IMPORTANT
+====================================================
+
+Do not create toy chatbot.
+
+Need true autonomous workflow feel.
+
+Need premium polished product.
+
+Need ready-to-run project.
+
+Need all files.
+
+Need best UI.
+
+Need judges to be impressed.
+
+Start building now.

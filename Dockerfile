@@ -1,26 +1,27 @@
-# Use a full node image instead of slim to ensure all build tools are present
+# Use a full Node image
 FROM node:20
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Enable corepack to handle pnpm automatically
+# Enable pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy only the dependency files first (this helps with caching)
-COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
-
-# Copy the rest of the application
+# Copy everything first to ensure workspace files are found
 COPY . .
 
-# Install dependencies (ignoring scripts to prevent build-time errors)
+# IMPORTANT: If your code is inside a subfolder named 'Attached-Assets', 
+# we need to move it to the root so pnpm can find the package.json.
+RUN if [ -d "Attached-Assets" ]; then cp -r Attached-Assets/* . && rm -rf Attached-Assets; fi
+
+# Clean install to avoid lockfile conflicts
 RUN pnpm install --no-frozen-lockfile --ignore-scripts
 
-# Hugging Face runs with user ID 1000, so we need to ensure permissions are open
+# Permissions fix
 RUN chmod -R 777 /app
 
-# Expose the correct Hugging Face port
+# Hugging Face default port
 EXPOSE 7860
 
-# Start the dev server
+# Start command
 CMD ["pnpm", "dev", "--host", "0.0.0.0", "--port", "7860"]

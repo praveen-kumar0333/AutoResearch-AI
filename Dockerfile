@@ -1,24 +1,26 @@
-# Use Node.js base
-FROM node:20-slim
+# Use a full node image instead of slim to ensure all build tools are present
+FROM node:20
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y python3 python3-pip git
+# Enable corepack to handle pnpm automatically
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy all files
+# Copy only the dependency files first (this helps with caching)
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
+
+# Copy the rest of the application
 COPY . .
 
-# Install pnpm and dependencies
-RUN npm install -g pnpm
-RUN pnpm install
+# Install dependencies (ignoring scripts to prevent build-time errors)
+RUN pnpm install --no-frozen-lockfile --ignore-scripts
 
-# IMPORTANT: We are skipping "RUN pnpm build" to avoid the error
-# and going straight to the start command.
+# Hugging Face runs with user ID 1000, so we need to ensure permissions are open
+RUN chmod -R 777 /app
 
-# Use the Hugging Face default port
+# Expose the correct Hugging Face port
 EXPOSE 7860
 
-# Start the app in host mode so it's reachable
+# Start the dev server
 CMD ["pnpm", "dev", "--host", "0.0.0.0", "--port", "7860"]

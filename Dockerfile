@@ -1,4 +1,4 @@
-# Use Node.js for the frontend and backend build
+# Use Node.js base
 FROM node:20-slim
 
 # Set working directory
@@ -7,18 +7,18 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y python3 python3-pip git
 
-# Copy the specific code from your subfolder
+# Copy all files
 COPY . .
 
-# Install dependencies for the main project
+# Install pnpm and dependencies
 RUN npm install -g pnpm
 RUN pnpm install
 
-# Build the project (if needed)
-RUN pnpm build
+# IMPORTANT: We are skipping "RUN pnpm build" to avoid the error
+# and going straight to the start command.
 
-# Expose the port your app runs on (usually 5173 or 3000)
-EXPOSE 5173
+# Use the Hugging Face default port
+EXPOSE 7860
 
-# Start the application
-CMD ["pnpm", "dev", "--host"]
+# Start the app in host mode so it's reachable
+CMD ["pnpm", "dev", "--host", "0.0.0.0", "--port", "7860"]
